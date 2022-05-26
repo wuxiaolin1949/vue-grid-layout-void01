@@ -1,6 +1,6 @@
 {
   "name": "vue-grid-layout-void01",
-  "version": "2.3.12",
+  "version": "1.0.0",
   "description": "A draggable and resizable grid layout, as a Vue component.",
   "keywords": [
     "grid",
@@ -18,7 +18,7 @@
   },
   "author": "Gustavo Santos (JBay Solutions) <gustavo.santos@jbaysolutions.com> (http://www.jbaysolutions.com)",
   "homepage": "https://github.com/jbaysolutions/vue-grid-layout-void01",
-  "main": "dist/vue-grid-layout-void01.common.js ",
+  "main": "dist/vue-grid-layout-void01.common.js",
   "unpkg": "dist/vue-grid-layout-void01.umd.min.js",
   "scripts": {
     "serve": "vue-cli-service serve",
