@@ -36,6 +36,7 @@
                 Row Height: <input type="number" v-model="rowHeight"/> Col nums: <input type="number" v-model="colNum"/>
                 Margin x: <input type="number" v-model="marginX"/> Margin y: <input type="number" v-model="marginY"/>
             </div>
+          <div style="width: 100%; height: 400px; overflow: scroll;" id="main">
             <grid-layout
                 :margin="[parseInt(marginX), parseInt(marginY)]"
                     :layout.sync="layout"
@@ -56,6 +57,7 @@
                     @breakpoint-changed="breakpointChangedEvent"
             >
                 <grid-item v-for="item in layout" :key="item.i"
+                           auto-scroll-container="#main"
                            :static="item.static"
                            :x="item.x"
                            :y="item.y"
@@ -80,6 +82,7 @@
                     <!--<button @click="clicked">CLICK ME!</button>-->
                 </grid-item>
             </grid-layout>
+          </div>
             <hr/>
             <!--<grid-layout
                     :layout="layout2"

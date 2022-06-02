@@ -124,6 +124,10 @@
              type: Number,
              required: true
              },*/
+          autoScrollContainer: {
+            type: String,
+            default: "",
+          },
             isDraggable: {
                 type: Boolean,
                 required: false,
@@ -769,7 +773,14 @@
                 }
                 if (this.draggable && !this.static) {
                     const opts = {
-                        autoScroll: true,
+                        autoScroll: {
+                          enabled: true,
+                          margin: 60,
+                          // the item that is scrolled (Window or HTMLElement)
+                          container: this.autoScrollContainer ? document.querySelector(this.autoScrollContainer) : null,
+                          // the scroll speed in pixels per second
+                          speed: 1000,
+                        },
                         ignoreFrom: this.dragIgnoreFrom,
                         allowFrom: this.dragAllowFrom
                     };
