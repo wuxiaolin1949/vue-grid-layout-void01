@@ -1,4 +1,4 @@
-/*! vue-grid-layout-void01 - 3.0.0 | (c) 2015, 2022  Gustavo Santos (JBay Solutions) <gustavo.santos@jbaysolutions.com> (http://www.jbaysolutions.com) | https://github.com/jbaysolutions/vue-grid-layout-void01 */
+/*! vue-grid-layout-void01 - 3.0.2 | (c) 2015, 2022  Gustavo Santos (JBay Solutions) <gustavo.santos@jbaysolutions.com> (http://www.jbaysolutions.com) | https://github.com/jbaysolutions/vue-grid-layout-void01 */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory(require("vue"));
@@ -1257,7 +1257,7 @@ module.exports = __webpack_require__("8e60") ? function (object, key, value) {
 
 "use strict";
 
-// CONCATENATED MODULE: ./node_modules/@vue/cli-service/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"4c6af9f6-vue-loader-template"}!./node_modules/@vue/cli-service/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/@vue/cli-service/node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/@vue/cli-service/node_modules/vue-loader/lib??vue-loader-options!./src/components/GridLayout.vue?vue&type=template&id=db3b5a1c&
+// CONCATENATED MODULE: ./node_modules/@vue/cli-service/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"f6cf012e-vue-loader-template"}!./node_modules/@vue/cli-service/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/@vue/cli-service/node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/@vue/cli-service/node_modules/vue-loader/lib??vue-loader-options!./src/components/GridLayout.vue?vue&type=template&id=db3b5a1c&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{ref:"item",staticClass:"vue-grid-layout",style:(_vm.mergedStyle)},[_vm._t("default"),_c('grid-item',{directives:[{name:"show",rawName:"v-show",value:(_vm.isDragging),expression:"isDragging"}],staticClass:"vue-grid-placeholder",attrs:{"x":_vm.placeholder.x,"y":_vm.placeholder.y,"w":_vm.placeholder.w,"h":_vm.placeholder.h,"i":_vm.placeholder.i}})],2)}
 var staticRenderFns = []
 
@@ -1315,7 +1315,7 @@ var utils = __webpack_require__("a2b6");
 // EXTERNAL MODULE: ./src/helpers/responsiveUtils.js
 var responsiveUtils = __webpack_require__("97a7");
 
-// EXTERNAL MODULE: ./src/components/GridItem.vue + 69 modules
+// EXTERNAL MODULE: ./src/components/GridItem.vue + 71 modules
 var GridItem = __webpack_require__("bc21");
 
 // EXTERNAL MODULE: ./src/helpers/DOM.js
@@ -4613,12 +4613,12 @@ __webpack_require__.d(all_namespaceObject, "edgeTarget", function() { return edg
 __webpack_require__.d(all_namespaceObject, "elements", function() { return snappers_elements; });
 __webpack_require__.d(all_namespaceObject, "grid", function() { return grid; });
 
-// CONCATENATED MODULE: ./node_modules/@vue/cli-service/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"4c6af9f6-vue-loader-template"}!./node_modules/@vue/cli-service/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/@vue/cli-service/node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/@vue/cli-service/node_modules/vue-loader/lib??vue-loader-options!./src/components/GridItem.vue?vue&type=template&id=4468ac46&
+// CONCATENATED MODULE: ./node_modules/@vue/cli-service/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"f6cf012e-vue-loader-template"}!./node_modules/@vue/cli-service/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/@vue/cli-service/node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/@vue/cli-service/node_modules/vue-loader/lib??vue-loader-options!./src/components/GridItem.vue?vue&type=template&id=285357b3&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{ref:"item",staticClass:"vue-grid-item",class:_vm.classObj,style:(_vm.style)},[_vm._t("default"),(_vm.resizableAndNotStatic)?_c('span',{ref:"handle",class:_vm.resizableHandleClass}):_vm._e()],2)}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/GridItem.vue?vue&type=template&id=4468ac46&
+// CONCATENATED MODULE: ./src/components/GridItem.vue?vue&type=template&id=285357b3&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es6.regexp.replace.js
 var es6_regexp_replace = __webpack_require__("a481");
@@ -9031,11 +9031,272 @@ if (typeof window === 'object' && !!window) {
 
 _interactjs_interact.use(auto_start_plugin);
 //# sourceMappingURL=index.js.map
-// CONCATENATED MODULE: ./node_modules/@interactjs/actions/drag/plugin.js
+// CONCATENATED MODULE: ./node_modules/@interactjs/auto-scroll/plugin.js
+
+
+
+
 
 
 
 function plugin_install(scope) {
+  const {
+    defaults,
+    actions
+  } = scope;
+  scope.autoScroll = autoScroll;
+
+  autoScroll.now = () => scope.now();
+
+  actions.phaselessTypes.autoscroll = true;
+  defaults.perAction.autoScroll = autoScroll.defaults;
+}
+
+const autoScroll = {
+  defaults: {
+    enabled: false,
+    margin: 60,
+    // the item that is scrolled (Window or HTMLElement)
+    container: null,
+    // the scroll speed in pixels per second
+    speed: 300
+  },
+  now: Date.now,
+  interaction: null,
+  i: 0,
+  // the handle returned by window.setInterval
+  // Direction each pulse is to scroll in
+  x: 0,
+  y: 0,
+  isScrolling: false,
+  prevTime: 0,
+  margin: 0,
+  speed: 0,
+
+  start(interaction) {
+    autoScroll.isScrolling = true;
+    raf.cancel(autoScroll.i);
+    interaction.autoScroll = autoScroll;
+    autoScroll.interaction = interaction;
+    autoScroll.prevTime = autoScroll.now();
+    autoScroll.i = raf.request(autoScroll.scroll);
+  },
+
+  stop() {
+    autoScroll.isScrolling = false;
+
+    if (autoScroll.interaction) {
+      autoScroll.interaction.autoScroll = null;
+    }
+
+    raf.cancel(autoScroll.i);
+  },
+
+  // scroll the window by the values in scroll.x/y
+  scroll() {
+    const {
+      interaction
+    } = autoScroll;
+    const {
+      interactable,
+      element
+    } = interaction;
+    const actionName = interaction.prepared.name;
+    const options = interactable.options[actionName].autoScroll;
+    const container = getContainer(options.container, interactable, element);
+    const now = autoScroll.now(); // change in time in seconds
+
+    const dt = (now - autoScroll.prevTime) / 1000; // displacement
+
+    const s = options.speed * dt;
+
+    if (s >= 1) {
+      const scrollBy = {
+        x: autoScroll.x * s,
+        y: autoScroll.y * s
+      };
+
+      if (scrollBy.x || scrollBy.y) {
+        const prevScroll = getScroll(container);
+
+        if (is.window(container)) {
+          container.scrollBy(scrollBy.x, scrollBy.y);
+        } else if (container) {
+          container.scrollLeft += scrollBy.x;
+          container.scrollTop += scrollBy.y;
+        }
+
+        const curScroll = getScroll(container);
+        const delta = {
+          x: curScroll.x - prevScroll.x,
+          y: curScroll.y - prevScroll.y
+        };
+
+        if (delta.x || delta.y) {
+          interactable.fire({
+            type: 'autoscroll',
+            target: element,
+            interactable,
+            delta,
+            interaction,
+            container
+          });
+        }
+      }
+
+      autoScroll.prevTime = now;
+    }
+
+    if (autoScroll.isScrolling) {
+      raf.cancel(autoScroll.i);
+      autoScroll.i = raf.request(autoScroll.scroll);
+    }
+  },
+
+  check(interactable, actionName) {
+    var _options$actionName$a;
+
+    const options = interactable.options;
+    return (_options$actionName$a = options[actionName].autoScroll) == null ? void 0 : _options$actionName$a.enabled;
+  },
+
+  onInteractionMove({
+    interaction,
+    pointer
+  }) {
+    if (!(interaction.interacting() && autoScroll.check(interaction.interactable, interaction.prepared.name))) {
+      return;
+    }
+
+    if (interaction.simulation) {
+      autoScroll.x = autoScroll.y = 0;
+      return;
+    }
+
+    let top;
+    let right;
+    let bottom;
+    let left;
+    const {
+      interactable,
+      element
+    } = interaction;
+    const actionName = interaction.prepared.name;
+    const options = interactable.options[actionName].autoScroll;
+    const container = getContainer(options.container, interactable, element);
+
+    if (is.window(container)) {
+      left = pointer.clientX < autoScroll.margin;
+      top = pointer.clientY < autoScroll.margin;
+      right = pointer.clientX > container.innerWidth - autoScroll.margin;
+      bottom = pointer.clientY > container.innerHeight - autoScroll.margin;
+    } else {
+      const rect = getElementClientRect(container);
+      left = pointer.clientX < rect.left + autoScroll.margin;
+      top = pointer.clientY < rect.top + autoScroll.margin;
+      right = pointer.clientX > rect.right - autoScroll.margin;
+      bottom = pointer.clientY > rect.bottom - autoScroll.margin;
+    }
+
+    autoScroll.x = right ? 1 : left ? -1 : 0;
+    autoScroll.y = bottom ? 1 : top ? -1 : 0;
+
+    if (!autoScroll.isScrolling) {
+      // set the autoScroll properties to those of the target
+      autoScroll.margin = options.margin;
+      autoScroll.speed = options.speed;
+      autoScroll.start(interaction);
+    }
+  }
+
+};
+function getContainer(value, interactable, element) {
+  return (is.string(value) ? getStringOptionResult(value, interactable, element) : value) || getWindow(element);
+}
+function getScroll(container) {
+  if (is.window(container)) {
+    container = window.document.body;
+  }
+
+  return {
+    x: container.scrollLeft,
+    y: container.scrollTop
+  };
+}
+function getScrollSize(container) {
+  if (is.window(container)) {
+    container = window.document.body;
+  }
+
+  return {
+    x: container.scrollWidth,
+    y: container.scrollHeight
+  };
+}
+function getScrollSizeDelta({
+  interaction,
+  element
+}, func) {
+  const scrollOptions = interaction && interaction.interactable.options[interaction.prepared.name].autoScroll;
+
+  if (!scrollOptions || !scrollOptions.enabled) {
+    func();
+    return {
+      x: 0,
+      y: 0
+    };
+  }
+
+  const scrollContainer = getContainer(scrollOptions.container, interaction.interactable, element);
+  const prevSize = getScroll(scrollContainer);
+  func();
+  const curSize = getScroll(scrollContainer);
+  return {
+    x: curSize.x - prevSize.x,
+    y: curSize.y - prevSize.y
+  };
+}
+const autoScrollPlugin = {
+  id: 'auto-scroll',
+  install: plugin_install,
+  listeners: {
+    'interactions:new': ({
+      interaction
+    }) => {
+      interaction.autoScroll = null;
+    },
+    'interactions:destroy': ({
+      interaction
+    }) => {
+      interaction.autoScroll = null;
+      autoScroll.stop();
+
+      if (autoScroll.interaction) {
+        autoScroll.interaction = null;
+      }
+    },
+    'interactions:stop': autoScroll.stop,
+    'interactions:action-move': arg => autoScroll.onInteractionMove(arg)
+  }
+};
+/* harmony default export */ var auto_scroll_plugin = (autoScrollPlugin);
+//# sourceMappingURL=plugin.js.map
+// CONCATENATED MODULE: ./node_modules/@interactjs/auto-scroll/index.js
+/* eslint-disable import/order, no-console, eol-last */
+
+
+
+if (typeof window === 'object' && !!window) {
+  interact_init(window);
+}
+
+_interactjs_interact.use(auto_scroll_plugin);
+//# sourceMappingURL=index.js.map
+// CONCATENATED MODULE: ./node_modules/@interactjs/actions/drag/plugin.js
+
+
+
+function drag_plugin_install(scope) {
   const {
     actions,
     Interactable,
@@ -9154,7 +9415,7 @@ const plugin_draggable = function draggable(options) {
 
 const drag = {
   id: 'actions/drag',
-  install: plugin_install,
+  install: drag_plugin_install,
   listeners: {
     'interactions:before-action-move': beforeMove,
     'interactions:action-resume': beforeMove,
@@ -11357,6 +11618,7 @@ _interactjs_interact.use(dev_tools_plugin);
 
 
 
+
 /* harmony default export */ var GridItemvue_type_script_lang_js_ = ({
   name: "GridItem",
   props: {
@@ -12078,6 +12340,7 @@ _interactjs_interact.use(dev_tools_plugin);
 
       if (this.draggable && !this.static) {
         var opts = {
+          autoScroll: true,
           ignoreFrom: this.dragIgnoreFrom,
           allowFrom: this.dragAllowFrom
         };
